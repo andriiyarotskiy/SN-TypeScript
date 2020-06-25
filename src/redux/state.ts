@@ -1,4 +1,5 @@
-import {rerenderEntireTree} from "../render";
+let rerenderEntireTree = (state: RootStateType) => {
+}
 
 export type RootStateType = {
     profilePage: ProfilePageType
@@ -58,7 +59,7 @@ let state: RootStateType = {
     sidebar: {},
 }
 
-export const addPost = () => {
+export const addPost = () => { // Добавление постов в <My posts />
     const newPost: PostsType = {
         id: 5,
         message: state.profilePage.newPostText,
@@ -69,11 +70,17 @@ export const addPost = () => {
     rerenderEntireTree(state)
 }
 
-
-export const changeNewText = (newText: string) => {
+export const changeNewText = (newText: string) => { // Обновление значения инпута через стейт
     state.profilePage.newPostText = newText
     rerenderEntireTree(state)
 }
+
+
+export const subscribe = (observer: (state: RootStateType) => void) => {
+    rerenderEntireTree = observer // Паттерн (наблюдатель)
+}
+
+
 export default state;
 
 
