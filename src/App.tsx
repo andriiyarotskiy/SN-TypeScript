@@ -5,11 +5,12 @@ import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
 import Profile from "./components/Profile/Profile";
 import Dialogs from './components/Dialogs/Dialogs';
-import {ProfileActionType, RootStateType} from "./redux/state";
+import {ProfileActionType, RootStateType, StoreType} from "./redux/state";
 
 type PropsType = {
     state: RootStateType
     dispatch: (action: ProfileActionType) => void
+    store: StoreType
 }
 
 const App: React.FC<PropsType> = (props) => {
@@ -21,7 +22,7 @@ const App: React.FC<PropsType> = (props) => {
                 <Navbar/>
                 <div className={'app-wrapper-content'}>
                     <Route path='/dialogs' render={() => <Dialogs
-                        state={props.state.dialogsPage}
+                        store={props.store}
                     />}/>
                     <Route path='/profile' render={() =>
                         <Profile

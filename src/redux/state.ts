@@ -1,5 +1,7 @@
 const ADD_POST = 'ADD-POST';
 const CHANGE_NEW_TEXT = 'CHANGE-NEW-TEXT';
+const UPDATE_NEW_MESSAGE_BODY = 'UPDATE_NEW_MESSAGE_BODY'
+const SEND_MESSAGE = 'SEND_MESSAGE'
 
 
 export type RootStateType = {
@@ -15,6 +17,7 @@ export type ProfilePageType = {
 export type DialogsPageType = {
     dialogs: Array<DialogsType>
     messages: Array<MessageType>
+    newMessageBody: string
 }
 export type sidebarType = {}
 
@@ -32,12 +35,6 @@ export type PostsType = {
     likesCount: string,
 }
 
-
-
-// export type ActionType = { // Типизация action ????
-//     type: string
-//     newText: string
-// }
 
 export type StoreType = { // Типизация STORE
     _state: RootStateType
@@ -71,16 +68,17 @@ let store: StoreType = {
                 {message: 'Bye', id: 3},
                 {message: 'Yo', id: 4},
                 {message: 'Yo', id: 5},
-            ]
+            ],
+            newMessageBody: ''
         },
         sidebar: {},
     },
-    _callSubscriber(state:RootStateType) {
+    _callSubscriber(state: RootStateType) {
     },
     getState() {
         return this._state
     },
-    subscribe (observer: (state: RootStateType) => void) { // <= Правильная ли типизация тут???
+    subscribe(observer: (state: RootStateType) => void) { // <= Правильная ли типизация тут???
         this._callSubscriber = observer // Паттерн (наблюдатель)
     },
     dispatch(action) {
@@ -96,6 +94,14 @@ let store: StoreType = {
         } else if (action.type === CHANGE_NEW_TEXT) {
             this._state.profilePage.newPostText = action.newText
             this._callSubscriber(this._state)
+        } else if (action.type === UPDATE_NEW_MESSAGE_BODY) {
+            this._state.dialogsPage.newMessageBody = action.body
+            this._callSubscriber(this._state)
+        } else if (action.type === SEND_MESSAGE) {
+            let body = this._state.dialogsPage.newMessageBody
+            this._state.dialogsPage.newMessageBody = ''
+            this._state.dialogsPage.messages.push({message: body, id: 6})
+            this._callSubscriber(this._state)
         }
     }
 }
@@ -105,29 +111,33 @@ export type AddPostActionCreatorType = {
 }
 export type ChangeNewTextActionCreatorType = {
     type: typeof CHANGE_NEW_TEXT
-    newText: string // ????
+    newText: string
 }
 
-export type ProfileActionType = AddPostActionCreatorType | ChangeNewTextActionCreatorType
+export type sendMessageCreatorType = {
+    type: typeof SEND_MESSAGE
+}
+export type updateNewMessageBodyCreatorType = {
+    type: typeof UPDATE_NEW_MESSAGE_BODY
+    body: string
+}
+
+
+export type ProfileActionType = AddPostActionCreatorType |  // Типизация action
+    ChangeNewTextActionCreatorType | sendMessageCreatorType |
+    updateNewMessageBodyCreatorType
 
 export const addPostActionCreator = (): AddPostActionCreatorType => ({type: ADD_POST})
 export const changeNewTextActionCreator = (text: string): ChangeNewTextActionCreatorType =>
     ({type: CHANGE_NEW_TEXT, newText: text})
 
+export const sendMessageCreator = (): sendMessageCreatorType => ({type: SEND_MESSAGE})
+export const updateNewMessageBodyCreator = (text: string): updateNewMessageBodyCreatorType =>
+    ({type: UPDATE_NEW_MESSAGE_BODY, body: text})
 
 
 export default store;
 
-
-
-/*export const changeNewText = (newText: string) => { // Обновление значения инпута через стейт
-
-}*/
-/*
-export const subscribe = (observer: (state: RootStateType) => void) => {
-    _callSubscriber = observer // Паттерн (наблюдатель)
-}
-*/
 
 
 
