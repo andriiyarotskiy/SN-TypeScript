@@ -40,12 +40,16 @@ const profileReducer = (state = initialState, action: ActionType): ProfilePageTy
                 message: state.newPostText,
                 likesCount: '28'
             };
-            state.posts.push(newPost)
-            state.newPostText = ''
-            return state
+            return {
+                ...state,
+                posts: [...state.posts, newPost],
+                newPostText: ''
+            }
         case CHANGE_NEW_TEXT:
-            state.newPostText = action.newText
-            return state
+            return {
+                ...state,
+                newPostText: action.newText
+            }
         default:
             return state
     }
