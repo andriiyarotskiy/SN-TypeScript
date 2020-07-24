@@ -1,70 +1,50 @@
 import React from 'react'
 import styles from './Users.module.css'
+import axios, {AxiosResponse} from 'axios'
+import userPhoto from '../../assets/images/user.png'
 
-const Users = (props: any) => {
-
-    if (props.users.length === 0) {
-        props.setUsers([
-            {
-                id: 1,
-                photoUrl: 'https://cdn2.iconfinder.com/data/icons/people-occupation-job/64/Ninja-Warrior-Assassin-Japan-Fighter-Avatar-Martial_arts-512.png',
-                followed: true,
-                fullName: 'Andiy',
-                status: 'Junior',
-                location: {country: 'Ukraine', city: 'Kiev'}
-            },
-            {
-                id: 2,
-                photoUrl: 'https://cdn2.iconfinder.com/data/icons/people-occupation-job/64/Ninja-Warrior-Assassin-Japan-Fighter-Avatar-Martial_arts-512.png',
-                followed: false,
-                fullName: 'Voicek',
-                status: 'Middle',
-                location: {country: 'Poland', city: 'Krakow'}
-            },
-            {
-                id: 3,
-                photoUrl: 'https://cdn2.iconfinder.com/data/icons/people-occupation-job/64/Ninja-Warrior-Assassin-Japan-Fighter-Avatar-Martial_arts-512.png',
-                followed: false,
-                fullName: 'David',
-                status: 'Senior',
-                location: {country: 'England', city: 'London'}
-            },
-        ])
+class Users extends React.Component<any, any> {
+    componentDidMount(): any {
+        axios.get("https://social-network.samuraijs.com/api/1.0/users")
+            .then((response: AxiosResponse<any>) => {
+                this.props.setUsers(response.data.items)
+            })
     }
 
-    return <div>
-        {
-            props.users.map((u: { id: string | number | undefined; photoUrl: string | undefined; followed: any; fullName: React.ReactNode; status: React.ReactNode; location: { country: React.ReactNode; city: React.ReactNode } }) =>
-                <div key={u.id}>
+    render(): React.ReactNode { //
+        return <div>
+            {
+                this.props.users.map((u: any) => // ANY
+                    <div key={u.id}>
                 <span>
                     <div>
-                        <img src={u.photoUrl} className={styles.userPhoto}/>
+                        <img src={u.photos.small !== null ? u.photos.small : userPhoto} className={styles.userPhoto}/>
                     </div>
                     <div>
                         {u.followed
                             ? <button onClick={() => {
-                                props.unfollow(u.id)
+                                this.props.unfollow(u.id)
                             }}>Unfollow</button>
                             : <button onClick={() => {
-                                props.follow(u.id)
+                                this.props.follow(u.id)
                             }}>Follow</button>}
 
                     </div>
                 </span>
+                        <span>
                     <span>
-                    <span>
-                        <div>{u.fullName}</div>
+                        <div>{u.name}</div>
                         <div>{u.status}</div>
                     </span>
                     <span>
-                        <div>{u.location.country}</div>
-                        <div>{u.location.city}</div>
+                        <div>{"u.location.country"}</div>
+                        <div>{"u.location.city"}</div>
                     </span>
                 </span>
-                </div>)
-        }
-    </div>
-
+                    </div>)
+            }
+        </div>
+    }
 }
 
 export default Users;
