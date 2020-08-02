@@ -1,6 +1,6 @@
 import usersReducer, {
     currentPageAC, followAC, LocationType,
-    setTotalUsersCount,
+    setTotalUsersCountAC,
     setUsersAC,
     unfollowAC,
     UsersPageType,
@@ -96,7 +96,7 @@ test('totalUsersCount should be changed from state', () => {
         currentPage: 1,
     };
 
-    const action = setTotalUsersCount(12);
+    const action = setTotalUsersCountAC(12);
 
     const endState = usersReducer(startState, action)
 
