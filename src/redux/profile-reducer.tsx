@@ -2,14 +2,14 @@ const ADD_POST = 'ADD-POST';
 const CHANGE_NEW_TEXT = 'CHANGE-NEW-TEXT';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 
-export type ProfileStateType = {
-    profilePage: ProfilePageType
+export type ProfileRootType = {
+    profile: ProfileType | null
 }
 
 export type ProfilePageType = {
     posts: Array<PostsType>
     newPostText: string
-    profile: null | ProfileType
+    profile: ProfileType | null
 }
 export type PostsType = {
     message: string,
@@ -51,10 +51,6 @@ export type AddPostActionCreatorType = {
 export type ChangeNewTextActionCreatorType = {
     type: typeof CHANGE_NEW_TEXT
     newText: string
-}
-export type SetUserProfileACTYPE = {
-    type: typeof SET_USER_PROFILE
-    profile: ProfileType
 }
 
 let initialState: ProfilePageType = {
@@ -102,6 +98,11 @@ const profileReducer = (state = initialState, action: ActionType): ProfilePageTy
 export const addPostActionCreator = (): AddPostActionCreatorType => ({type: ADD_POST})
 export const changeNewTextActionCreator = (text: string): ChangeNewTextActionCreatorType =>
     ({type: CHANGE_NEW_TEXT, newText: text})
+
+export type SetUserProfileACTYPE = {
+    type: typeof SET_USER_PROFILE
+    profile: ProfileType
+}
 export const setUserProfile = (profile: ProfileType): SetUserProfileACTYPE => ({type: SET_USER_PROFILE, profile})
 
 export default profileReducer;
