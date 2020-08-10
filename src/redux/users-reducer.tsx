@@ -6,7 +6,7 @@ const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 
 export type usersStatePageType = {
-    usersPage : UsersPageType
+    usersPage: UsersPageType
 }
 
 export type UsersPageType = {
@@ -58,7 +58,7 @@ export type UsersACTYPE = FollowACType | UnfollowACType | SetUsersACType
     | SetTotalUsersCountAC
     | ToggleIsFetchingACType
 
-let initialState = {
+let initialState: UsersPageType = {
     users: [] as Array<UsersType>,
     pagesize: 4,
     totalUsersCount: 0,
@@ -87,7 +87,6 @@ const usersReducer = (state = initialState, action: UsersACTYPE): UsersPageType 
                         return {...u, followed: false}
                     }
                     return u
-
                 })
             }
         case SET_USERS:

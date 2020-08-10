@@ -2,6 +2,7 @@ import React from "react";
 import userPhoto from '../../assets/images/user.png'
 import styles from './Users.module.css'
 import {NavLink} from "react-router-dom";
+import axios from "axios";
 
 
 let Users = (props: any) => {
@@ -33,12 +34,32 @@ let Users = (props: any) => {
                     <div>
                         {u.followed
                             ? <button onClick={() => {
-                                props.unfollow(u.id)
+
+                                axios.delete<any>(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {
+                                    withCredentials: true,
+                                    headers: {
+                                        "API-KEY": "463258d9-5ed4-4784-858e-ea28f4a1e763"
+                                    }
+                                })
+                                    .then((response) => {
+                                        if (response.data.resultCode === 0) {
+                                            props.unfollow(u.id)
+                                        }
+                                    })
                             }}>Unfollow</button>
                             : <button onClick={() => {
-                                props.follow(u.id)
+                                axios.post<any>(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {}, {
+                                    withCredentials: true,
+                                    headers: {
+                                        "API-KEY": "463258d9-5ed4-4784-858e-ea28f4a1e763"
+                                    }
+                                })
+                                    .then((response) => {
+                                        if (response.data.resultCode === 0) {
+                                            props.follow(u.id)
+                                        }
+                                    })
                             }}>Follow</button>}
-
                     </div>
                 </span>
                     <span>

@@ -1,10 +1,10 @@
 import usersReducer, {
-    currentPageAC, followAC, LocationType,
-    setTotalUsersCountAC,
-    setUsersAC,
-    unfollowAC,
+    setCurrentPage,
+    setTotalUsersCount,
+
     UsersPageType,
-    UsersType
+    UsersType,
+    setUsers, unfollow, follow
 } from "./users-reducer";
 
 test('users following must be changed to true and follow', () => {
@@ -24,9 +24,10 @@ test('users following must be changed to true and follow', () => {
         pagesize: 1,
         totalUsersCount: 2,
         currentPage: 3,
+        isFetching: true
     }
 
-    const action = followAC(42);
+    const action = follow(42);
 
     const endState = usersReducer(startState, action)
 
@@ -50,9 +51,10 @@ test('users following must be changed to false and unfollow', () => {
         pagesize: 1,
         totalUsersCount: 2,
         currentPage: 3,
+        isFetching: true
     }
 
-    const action = unfollowAC(42);
+    const action = unfollow(42);
 
     const endState = usersReducer(startState, action)
 
@@ -65,9 +67,10 @@ test('currentPage should be changed from state', () => {
         pagesize: 4,
         totalUsersCount: 0,
         currentPage: 1,
+        isFetching: true
     };
 
-    const action = setUsersAC([]);
+    const action = setUsers([]);
 
     const endState = usersReducer(startState, action)
 
@@ -76,12 +79,13 @@ test('currentPage should be changed from state', () => {
 test('totalUsersCount should be changed from state', () => {
     const startState: UsersPageType = {
         users: [],
-        pagesize: 4,
+        pagesize: 3,
         totalUsersCount: 0,
         currentPage: 1,
+        isFetching: true
     };
 
-    const action = currentPageAC(3);
+    const action = setCurrentPage(3);
 
     const endState = usersReducer(startState, action)
 
@@ -94,9 +98,10 @@ test('totalUsersCount should be changed from state', () => {
         pagesize: 4,
         totalUsersCount: 0,
         currentPage: 1,
+        isFetching: true
     };
 
-    const action = setTotalUsersCountAC(12);
+    const action = setTotalUsersCount(12);
 
     const endState = usersReducer(startState, action)
 

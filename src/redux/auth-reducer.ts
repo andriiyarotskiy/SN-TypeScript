@@ -12,10 +12,6 @@ type SetAuthUserDataACTYPE = {
 }
 type ActionType = SetAuthUserDataACTYPE
 
-export type AuthStateType = {
-    auth: AuthType | null
-}
-
 export type AuthType = {
     id: null | number,
     email: null | string,
