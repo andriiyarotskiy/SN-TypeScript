@@ -1,7 +1,6 @@
 import usersReducer, {
     setCurrentPage,
     setTotalUsersCount,
-
     UsersPageType,
     UsersType,
     setUsers, unfollow, follow

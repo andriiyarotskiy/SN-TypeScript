@@ -7,7 +7,7 @@ import axios from "axios";
 
 let Users = (props: any) => {
 
-    let pagesCount = Math.ceil((props.totalUsersCount / props.pageSize) * 100)
+    let pagesCount = Math.ceil((props.totalUsersCount / props.pageSize) / 100)
 
     let pages = []
     for (let i = 1; i <= pagesCount; i++) {

@@ -9,8 +9,8 @@ import {
     unfollow, UsersPageType, usersStatePageType,
 } from "../../redux/users-reducer";
 import axios from 'axios';
-import {Preloader} from "../common/preloader/Preloader";
 import Users from "./Users";
+import {Preloader} from "../common/preloader/Preloader";
 
 // type UsersContainerType = {
 //     toggleIsFetching: (arg0: boolean) => void
