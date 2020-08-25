@@ -1,23 +1,31 @@
 import React from "react";
 import {
+    DialogsPageType,
     sendMessageCreator,
     updateNewMessageBodyCreator,
 } from "../../redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
+import {AppStateType} from "../../redux/redux-store";
 
-let mapStateToProps = (state: any) => {
+type MapStatePropsType = {
+    isAuth: boolean;
+    dialogsPage: DialogsPageType
+}
+
+let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
-        dialogsPage: state.dialogsPage
+        dialogsPage: state.dialogsPage,
+        isAuth: state.auth.isAuth
     }
 }
 
 let mapDispatchToProps = (dispatch: any) => {
     return {
-        sendMessage : () => {
+        sendMessage: () => {
             dispatch(sendMessageCreator())
         },
-        updateNewMessageBody : (body: string) =>{
+        updateNewMessageBody: (body: string) => {
             dispatch(updateNewMessageBodyCreator(body))
         }
     }
@@ -25,28 +33,6 @@ let mapDispatchToProps = (dispatch: any) => {
 
 
 const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 export default DialogsContainer;
