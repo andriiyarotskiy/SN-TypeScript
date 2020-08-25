@@ -7,6 +7,8 @@ import {
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import {Preloader} from "../common/preloader/Preloader";
+import {compose} from "redux";
+import {WithAuthRedirect} from "../../HOC/WithAuthRedirect";
 
 // type UsersContainerType = {
 //     toggleIsFetching: (arg0: boolean) => void
@@ -60,10 +62,7 @@ let mapStateToProps = (state: usersStatePageType) => {
     }
 }
 
-export default connect(mapStateToProps, {
-    follow,
-    unfollow,
-    setCurrentPage,
-    toggleFollowingProgress,
-    getUsers
-})(UsersContainer)
+export default compose<any>(
+    WithAuthRedirect,
+    connect(mapStateToProps, {follow, unfollow, setCurrentPage, toggleFollowingProgress, getUsers})
+)(UsersContainer)
