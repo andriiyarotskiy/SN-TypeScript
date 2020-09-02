@@ -1,14 +1,34 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import s from './MyPosts.module.css'
 import Post from "./Post/Post";
-import { PostsType } from '../../../redux/profile-reducer';
+import {PostsType} from '../../../redux/profile-reducer';
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
 
 type MyPostsType = {
     posts: Array<PostsType> // Типизация из Profile-reducer ???????
     newPostText: string
-    addPost: () => void
-    changeNewText: (text:string) => void
+    addPost: (newPostText: string) => void
 }
+
+type AddNewPostFormType = {
+    newPostText: string
+}
+
+let AddNewPostForm = (props: InjectedFormProps<AddNewPostFormType>) => {
+    return (
+        <form onSubmit={props.handleSubmit}>
+            <div>
+                <Field name={'newPostText'} component={'textarea'}/>
+            </div>
+            <div>
+                <button>Add post</button>
+            </div>
+        </form>
+    )
+}
+
+const AddNewPostReduxForm = reduxForm<AddNewPostFormType>({form: 'ProfileAddNewPostForm'})(AddNewPostForm)
+
 
 const MyPosts = (props: MyPostsType) => {
 
@@ -16,29 +36,14 @@ const MyPosts = (props: MyPostsType) => {
                                                   message={p.message}
                                                   likesCount={p.likesCount}/>)
 
-    let onAddPost = () => {
-        props.addPost()
-    }
-
-    const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        let text = e.currentTarget.value
-        props.changeNewText(text)
+    let onAddPost = (values: { newPostText: string }) => {
+        props.addPost(values.newPostText)
     }
 
     return (
         <div className={s.postsBlock}>
             <h3>My posts</h3>
-            <div>
-                <div>
-                    <textarea
-                        value={props.newPostText}
-                        onChange={onPostChange}
-                    />
-                </div>
-                <div>
-                    <button onClick={onAddPost}>Add post</button>
-                </div>
-            </div>
+            <AddNewPostReduxForm onSubmit={onAddPost}/>
             <div className={s.posts}>
                 {postsElement}
             </div>
