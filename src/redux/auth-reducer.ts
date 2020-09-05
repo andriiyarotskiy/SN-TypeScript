@@ -4,7 +4,7 @@ import {stopSubmit} from "redux-form";
 const SET_USER_DATA = 'SET_USER_DATA'
 
 
-type SetAuthUserDataACTYPE = ReturnType<typeof setAuthUserData>
+export type SetAuthUserDataACTYPE = ReturnType<typeof setAuthUserData>
 type ActionType = SetAuthUserDataACTYPE
 
 export type AuthType = {
