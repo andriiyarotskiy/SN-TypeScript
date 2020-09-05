@@ -49,7 +49,12 @@ const LoginForm = (props: InjectedFormProps<FormDataType>) => {
 
 const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
 
-const Login = (props: any) => {
+type LoginType = {
+    isAuth: boolean,
+    login: (email: string, password: string, rememberMe: boolean) => void
+}
+
+const Login = (props: LoginType) => {
 
     const onSubmit = (formData: FormDataType) => {
         props.login(formData.email, formData.password, formData.rememberMe)

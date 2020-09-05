@@ -7,7 +7,7 @@ import {AppStateType} from "../../redux/redux-store";
 import {compose} from 'redux';
 
 type PathParamsType = {
-    userId: any // ANY!!!!!!!!!!!!!!!!!!!!
+    userId: string
 }
 type MapStatePropsType = {
     profile: ProfileType | null
@@ -27,12 +27,12 @@ type RootPropsType = RouteComponentProps<PathParamsType> & OwnPropsType
 
 class ProfileContainer extends React.Component<RootPropsType> {
     componentDidMount() {
-        let userId = this.props.match.params.userId
+        let userId: number = +this.props.match.params.userId
         if (!userId) {
-            (userId) = this.props.authorizedUserId // ID user id default
+            userId = this.props.authorizedUserId || 0
         }
         this.props.getUserProfile(userId)
-        this.props.getStatus(userId)
+        this.props.getStatus(userId.toString())
     }
 
     render() {
