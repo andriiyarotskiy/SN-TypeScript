@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, withRouter} from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import './App.css';
 import Navbar from "./components/Navbar/Navbar";
 import HeaderContainer from "./components/Header/HeaderContainer";
@@ -7,13 +7,19 @@ import Login from './components/Login/Login';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import UsersContainer from "./components/Users/UsersContainer";
-import {connect} from "react-redux";
-import {compose} from "redux";
-import {initializeApp} from "./redux/app-reducer";
-import {AppStateType} from "./redux/redux-store";
-import {Preloader} from "./components/common/preloader/Preloader";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { initializeApp } from "./redux/app-reducer";
+import { AppStateType } from "./redux/redux-store";
+import { Preloader } from "./components/common/preloader/Preloader";
 
-class App extends React.Component<any> {
+type AppType = {
+    initialized: boolean
+    initializeApp: () => boolean
+}
+
+
+class App extends React.Component<AppType> {
 
     componentDidMount() {
         this.props.initializeApp()
@@ -22,25 +28,24 @@ class App extends React.Component<any> {
 
     render() {
         if (!this.props.initialized) {
-            return <Preloader/>
+            return <Preloader />
         }
         return (
-
             <div className={'app-wrapper'}>
-                <HeaderContainer/>
-                <Navbar/>
+                <HeaderContainer />
+                <Navbar />
                 <div className={'app-wrapper-content'}>
                     <Route path='/dialogs' render={() =>
-                        <DialogsContainer/>}
+                        <DialogsContainer />}
                     />
                     <Route path='/profile/:userId?' render={() =>
-                        <ProfileContainer/>}
+                        <ProfileContainer />}
                     />
                     <Route path='/users' render={() =>
-                        <UsersContainer/>}
+                        <UsersContainer />}
                     />
                     <Route path='/login' render={() =>
-                        <Login/>}
+                        <Login />}
                     />
                 </div>
             </div>
@@ -55,5 +60,5 @@ const mapStateToProps = (state: AppStateType) => ({
 
 export default compose<any>(
     withRouter,
-    connect(mapStateToProps, {initializeApp}))
-(App);
+    connect(mapStateToProps, { initializeApp }))
+    (App);
