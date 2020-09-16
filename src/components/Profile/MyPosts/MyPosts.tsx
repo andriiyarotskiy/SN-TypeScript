@@ -4,7 +4,7 @@ import Post from "./Post/Post";
 import {PostsType} from '../../../redux/profile-reducer';
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {maxLengthCreator, required} from '../../../utils/validators/validators';
-import { Textarea } from '../../common/FormsControls/FormsControls';
+import {Textarea} from '../../common/FormsControls/FormsControls';
 
 type MyPostsType = {
     posts: Array<PostsType> // Типизация из Profile-reducer ???????
@@ -38,7 +38,8 @@ let AddNewPostForm = (props: InjectedFormProps<AddNewPostFormType>) => {
 const AddNewPostReduxForm = reduxForm<AddNewPostFormType>({form: 'ProfileAddNewPostForm'})(AddNewPostForm)
 
 
-const MyPosts = (props: MyPostsType) => {
+const MyPosts = React.memo((props: MyPostsType) => {
+
 
     let postsElement = props.posts.map(p => <Post key={p.id}
                                                   message={p.message}
@@ -58,6 +59,6 @@ const MyPosts = (props: MyPostsType) => {
         </div>
 
     );
-}
+})
 
 export default MyPosts;
