@@ -10,6 +10,12 @@ const instance = axios.create({
 })
 
 
+export type ResponsefolowUnfollowType<T> = {
+    resultCode: number
+    messages: string[]
+    data: T
+}
+
 export const usersAPI = {
     getUser(currentPage: number, pageSize: any) {
         return instance.get(`users?page=${currentPage}&count=${pageSize}`)
