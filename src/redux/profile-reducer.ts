@@ -1,6 +1,7 @@
 import {profileAPI, usersAPI} from "../api/api";
 
 const ADD_POST = 'ADD-POST';
+const DELETE_POST = 'DELETE_POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_STATUS = 'SET_STATUS';
 
@@ -45,7 +46,7 @@ export type ProfilePhotosType = {
 
 
 export type ActionType = AddPostActionCreatorType |  // Типизация action
-    SetUserProfileACTYPE | setStatusType
+    SetUserProfileACTYPE | setStatusType | deletePostActionCreatorType
 
 export type AddPostActionCreatorType = {
     type: typeof ADD_POST
@@ -54,9 +55,9 @@ export type AddPostActionCreatorType = {
 
 let initialState: ProfilePageType = {
     posts: [
-        {message: 'Hello, how are you doing', likesCount: '10',},
-        {message: 'Hay, nothing', likesCount: '25',},
-        {message: 'learn React, nigger!', likesCount: '1',},
+        {message: 'Hello, how are you doing', likesCount: '10', id: 1},
+        {message: 'Hay, nothing', likesCount: '25', id: 2},
+        {message: 'learn React, nigger!', likesCount: '1', id: 3},
     ],
     profile: null,
     status: ''
@@ -67,13 +68,17 @@ const profileReducer = (state = initialState, action: ActionType): ProfilePageTy
     switch (action.type) {
         case ADD_POST:
             let newPost = {
-                id: 5,
+                id: 4,
                 message: action.newPostText,
                 likesCount: '28'
             };
             return {
                 ...state,
                 posts: [...state.posts, newPost]
+            }
+        case DELETE_POST:
+            return {
+                ...state, posts: state.posts.filter(p => p.id !== action.postId)
             }
         case SET_USER_PROFILE: {
             return {
@@ -94,17 +99,20 @@ const profileReducer = (state = initialState, action: ActionType): ProfilePageTy
 
 
 export const addPostActionCreator = (newPostText: string): AddPostActionCreatorType => ({type: ADD_POST, newPostText})
-
-
+export const deletePost = (postId: number) => ({type: DELETE_POST, postId} as const)
 export type SetUserProfileACTYPE = {
     type: typeof SET_USER_PROFILE
     profile: ProfileType
 }
-type setStatusType = ReturnType<typeof setStatus>
 
 export const setUserProfile = (profile: ProfileType): SetUserProfileACTYPE => ({type: SET_USER_PROFILE, profile})
 export const setStatus = (status: string) => ({type: SET_STATUS, status}) as const
 
+export type deletePostActionCreatorType = ReturnType<typeof deletePost>
+export type setStatusType = ReturnType<typeof setStatus>
+
+
+// THUNK
 export const getUserProfile = (userId: string) => (dispatch: any) => {
     usersAPI.getProfile(userId).then(response => {
         dispatch(setUserProfile(response.data))
