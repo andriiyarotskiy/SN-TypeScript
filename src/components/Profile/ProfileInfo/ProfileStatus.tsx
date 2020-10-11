@@ -6,7 +6,7 @@ type ProfileStatType = {
 }
 
 
-class ProfileStat extends React.Component<ProfileStatType> {
+class ProfileStatus extends React.Component<ProfileStatType> {
 
 
     state = {
@@ -54,4 +54,4 @@ class ProfileStat extends React.Component<ProfileStatType> {
     }
 }
 
-export default ProfileStat
+export default ProfileStatus
