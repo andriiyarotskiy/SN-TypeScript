@@ -30,7 +30,6 @@ let Paginator = ({currentPage, onPageChanged, pageSize, totalItemsCount, portion
         <button onClick={() => {
             setPortionNumber(portionNumber - 1)
         }}>PREV</button>}
-
         {pages
             .filter(p => p >= leftPortionPageNumber && p <= rightPortionPageNumber)
             .map((p) => {
