@@ -70,7 +70,7 @@ export type UsersACTYPE = FollowACType | UnfollowACType | SetUsersACType
 
 let initialState: UsersPageType = {
     users: [] as Array<UsersType>,
-    pagesize: 4,
+    pagesize: 10,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,

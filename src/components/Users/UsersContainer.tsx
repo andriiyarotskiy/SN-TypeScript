@@ -26,7 +26,7 @@ import {AppStateType} from "../../redux/redux-store";
 //     pageSize: number
 //     currentPage: number
 //     isFetching: boolean
-//     totalUsersCount: number
+//     totalItemsCount: number
 //     users: Array<UsersType>
 //     follow: boolean
 //     unfollow: boolean
@@ -65,7 +65,7 @@ class UsersContainer extends React.Component<any, UsersPageType> { // первы
 //     return {
 //         users: state.usersPage.users,
 //         pageSize: state.usersPage.pagesize,
-//         totalUsersCount: state.usersPage.totalUsersCount,
+//         totalItemsCount: state.usersPage.totalItemsCount,
 //         currentPage: state.usersPage.currentPage,
 //         isFetching: state.usersPage.isFetching,
 //         followingInProgress: state.usersPage.followingInProgress
