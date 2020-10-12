@@ -1,16 +1,26 @@
 import React from 'react';
 import s from './ProfileInfo.module.css'
+import {Preloader} from "../../common/preloader/Preloader";
+import {ProfileType} from "../../../redux/profile-reducer";
+import ProfileStatWithHooks from './ProfileStatWIthHooks';
 
-const ProfileInfo = () => {
+type PropsType = {
+    profile: ProfileType | null
+    status: string
+    updateStatus: (status: string) => void
+}
+
+const ProfileInfo = ({profile, status, updateStatus}: PropsType) => {
+    if (!profile) {
+        return <Preloader/>
+    }
     return (
         <div>
-            <div className={s.mainImage}>
-                <img
-                    src="https://images.pexels.com/photos/302804/pexels-photo-302804.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-                    alt="image"/>
+            <div className={s.descriptionBlock}>
+                <img src={profile.photos.small} alt=""/>
+                <span>fullName: {profile.fullName}</span>
+                <ProfileStatWithHooks status={status} updateStatus={updateStatus}/>
             </div>
-            <div className={s.descriptionBlock}>ava + description</div>
-
         </div>
     );
 }

@@ -1,19 +1,19 @@
 import React from 'react';
-import s from './Profile.module.css'
-import MyPosts from "./MyPosts/MyPosts";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import {ProfilePageType} from "../../redux/state";
+import MyPostsContainer from './MyPosts/MyPostsContainer';
+import {ProfileType} from "../../redux/profile-reducer";
 
-type ProfileType = {
-    state: ProfilePageType
-    addPost: (postText: string) => void
+type PropsType = {
+    profile: ProfileType | null
+    status: string
+    updateStatus: (status: string) => void
 }
 
-const Profile = (props: ProfileType) => {
+const Profile = (props: PropsType) => {
     return (
         <div>
-            <ProfileInfo />
-            <MyPosts posts={props.state.posts} addPost={props.addPost}/>
+            <ProfileInfo profile={props.profile} status={props.status} updateStatus={props.updateStatus}/>
+            <MyPostsContainer/>
         </div>
     );
 }

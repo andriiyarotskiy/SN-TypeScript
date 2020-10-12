@@ -1,26 +1,35 @@
-import React, {createRef} from "react";
+import React from "react";
 import s from "./Dialogs.module.css"
 import Message from "./Message/Message";
 import DialogItem from "./DialogsItem/DialogsItem";
-import {DialogsPageType} from "../../redux/state";
+import {DialogsPageType} from "../../redux/dialogs-reducer";
+import {Redirect} from "react-router-dom";
+import AddMessegeForm from "./AddMessageForm/AddMessegeForm";
 
 
 type DialogsType = {
-    state: DialogsPageType
+    dialogsPage: DialogsPageType
+    sendMessage: (newMessageBody: string) => void
+    updateNewMessageBody: (body: string) => void
+    isAuth: boolean
 }
 
 const Dialogs = (props: DialogsType) => {
 
-    let dialogElement = props.state.dialogs.map(d => <DialogItem key={d.id}
-                                                                 name={d.name}
-                                                                 id={d.id}/>)
+    let state = props.dialogsPage
 
-    let messageElement = props.state.messages.map(m => <Message key={m.id}
-                                                                message={m.message}/>)
+    let dialogElement = state.dialogs.map(d => <DialogItem key={d.id}
+                                                           name={d.name}
+                                                           id={d.id}/>)
 
+    let messageElement = state.messages.map(m => <Message key={m.id}
+                                                          message={m.message}/>)
 
-    let MessageArea = createRef<HTMLTextAreaElement>()
+    let addNewMessage = (values: any) => {
+        props.sendMessage(values.newMessageBody)
+    }
 
+    if (!props.isAuth) return <Redirect to={"/login"}/>
 
     return (
         <div className={s.dialogs}>
@@ -28,9 +37,9 @@ const Dialogs = (props: DialogsType) => {
                 {dialogElement}
             </div>
             <div className={s.messages}>
-                {messageElement}
-                <textarea ref={MessageArea}></textarea>
-                <button>Send Message</button>
+
+                <div>{messageElement}</div>
+                <AddMessegeForm onSubmit={addNewMessage}/>
             </div>
         </div>
 
