@@ -6,3 +6,7 @@
 .descriptionBlock {
     padding: 10px;
 }
+.mainPhoto {
+    display: block;
+    max-width: 200px;
+}

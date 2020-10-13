@@ -37,10 +37,15 @@ export const profileAPI = {
         return instance.get(`profile/` + userId) // query parametr
     },
     getStatus(userId: string) {
-        return instance.get(`status/` + userId) // URI parametr
+        return instance.get(`profile/status/` + userId) // URI parametr
     },
     updateStatus(status: string) {
         return instance.put(`profile/status/`, {status})
+    },
+    savePhoto(photoFile: any) { // ANY!!!!!!!!!!!!!
+        const formData: any = new FormData(); // ANY!!!!!!!!!!!!!!!!!!!!!!!!
+        formData.append("image", photoFile)
+        return instance.put(`profile/photo/`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
     },
 }
 export const authAPI = {
