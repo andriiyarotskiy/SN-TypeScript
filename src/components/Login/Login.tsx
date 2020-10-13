@@ -7,21 +7,27 @@ import {login} from "../../redux/auth-reducer";
 import {Redirect} from "react-router-dom";
 import {AppStateType} from "../../redux/redux-store";
 import style from "../../components/common/FormsControls/FormsControls.module.css"
+import {NullableType} from "../../utils/typeAssist";
 
 
 type FormDataType = {
     email: string
     password: string
     rememberMe: boolean
+    captcha: boolean
 }
 
-const LoginForm = ({handleSubmit, error}: InjectedFormProps<FormDataType>) => {
+type LoginFormOwnType = { captchaUrl: NullableType<string> }
+
+const LoginForm = ({handleSubmit, error, captchaUrl}: InjectedFormProps<FormDataType, LoginFormOwnType> & LoginFormOwnType) => { // child component
 
     return (
         <form onSubmit={handleSubmit}>
-                {createField('Email', 'email', [required], Input, {type: 'text'})}
-                {createField('Password', 'password', [required], Input, {type: 'text'})}
-                {createField(null, 'rememberMe', [], Input, {type: 'checkbox'},'remember me')}
+            {createField('Email', 'email', [required], Input, {type: 'text'})}
+            {createField('Password', 'password', [required], Input, {type: 'text'})}
+            {createField(null, 'rememberMe', [], Input, {type: 'checkbox'}, 'remember me')}
+            {captchaUrl && <img src={captchaUrl} alt="captcha"/>}
+            {captchaUrl && createField("Symbols from image", 'captcha', [required], Input, {}, '')}
             {error && <div className={style.formSummaryError}>
                 {error}
             </div>}
@@ -32,17 +38,18 @@ const LoginForm = ({handleSubmit, error}: InjectedFormProps<FormDataType>) => {
     )
 }
 
-const LoginReduxForm = reduxForm<FormDataType>({form: 'login'})(LoginForm)
+const LoginReduxForm = reduxForm<FormDataType, LoginFormOwnType>({form: 'login'})(LoginForm)
 
 type LoginType = {
     isAuth: boolean,
-    login: (email: string, password: string, rememberMe: boolean) => void
+    login: (email: string, password: string, rememberMe: boolean, captcha: any) => void
+    captchaUrl: NullableType<string>
 }
 
-const Login = (props: LoginType) => {
+const Login = (props: LoginType) => {  // parent component
 
     const onSubmit = (formData: FormDataType) => {
-        props.login(formData.email, formData.password, formData.rememberMe)
+        props.login(formData.email, formData.password, formData.rememberMe, formData.captcha)
     }
 
     if (props.isAuth) {
@@ -52,11 +59,12 @@ const Login = (props: LoginType) => {
     return (
         <div>
             <h1>Login</h1>
-            <LoginReduxForm onSubmit={onSubmit}/>
+            <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl}/>
         </div>
     )
 }
 const mapStateToProps = (state: AppStateType) => ({
+    captchaUrl: state.auth.captchaUrl,
     isAuth: state.auth.isAuth
 })
 export default connect(mapStateToProps, {login})(Login)
