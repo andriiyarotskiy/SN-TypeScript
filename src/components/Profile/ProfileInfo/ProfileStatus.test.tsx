@@ -11,26 +11,30 @@ describe("ProfileStat component", () => {
         expect(instance.state.status).toBe("it-kamasutra.com");
     });
     test("after creation <span> should be displayed with correct status", () => {
-        const component = create(<ProfileStatus status="it-kamasutra.com"/>);
+        const component = create(<ProfileStatus status="it-kamasutra.com" updateStatus={() => {
+        }}/>);
         const root: ReactTestInstance = component.root; // Need type for instance
         let span = root.findByType("span")
         expect(span).not.toBeNull(); // спан не должен быть null когда показан статус
     });
     test("after creation <input> should'nt be displayed with correct status", () => {
-        const component = create(<ProfileStatus status="it-kamasutra.com"/>);
+        const component = create(<ProfileStatus status="it-kamasutra.com" updateStatus={() => {
+        }}/>);
         const root: ReactTestInstance = component.root;
         expect(() => {  // инпут должен быть скрыт когда показуется статус
             let input = root.findByType("input")
         }).toThrow()
     });
     test("after creation <span/> should should contains correct status", () => {
-        const component = create(<ProfileStatus status="it-kamasutra.com"/>);
+        const component = create(<ProfileStatus status="it-kamasutra.com" updateStatus={() => {
+        }}/>);
         const root: ReactTestInstance = component.root; // Need type for instance
         let span = root.findByType("span");
         expect(span.children[0]).toBe("it-kamasutra.com");
     });
     test("input should be displayed in editMode instead of span", () => {
-        const component = create(<ProfileStatus status="it-kamasutra.com"/>);
+        const component = create(<ProfileStatus status="it-kamasutra.com" updateStatus={() => {
+        }}/>);
         const root: ReactTestInstance = component.root; // Need type for instance
         let span = root.findByType("span"); // находит спан
         span.props.onDoubleClick() // делается дабл клик

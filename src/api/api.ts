@@ -42,10 +42,13 @@ export const profileAPI = {
     updateStatus(status: string) {
         return instance.put(`profile/status/`, {status})
     },
-    savePhoto(photoFile: any) { // ANY!!!!!!!!!!!!!
-        const formData: any = new FormData(); // ANY!!!!!!!!!!!!!!!!!!!!!!!!
+    savePhoto(photoFile: Blob) {
+        const formData = new FormData();
         formData.append("image", photoFile)
         return instance.put(`profile/photo/`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+    },
+    saveProfile(profile: any) { // ANY!!!!!!!!!!!!!
+        return instance.put(`profile`, profile);
     },
 }
 export const authAPI = {

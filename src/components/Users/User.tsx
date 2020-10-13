@@ -11,7 +11,7 @@ let User = ({user, followingInProgress, ...props}: any) => {
                 <span>
                     <div>
                         <NavLink to={'profile/' + user.id}>
-                        <img src={user.photos.small !== null ? user.photos.small : userPhoto}
+                        <img src={user.photos.large !== null ? user.photos.large : userPhoto}
                              className={styles.userPhoto} alt=''/>
                         </NavLink>
                     </div>

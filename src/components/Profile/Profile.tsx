@@ -9,6 +9,7 @@ type PropsType = {
     updateStatus: (status: string) => void
     isOwner: boolean
     savePhoto: any // any!!!!!!!!!!!!
+    saveProfile: any
 }
 
 const Profile = (props: PropsType) => {
@@ -19,6 +20,7 @@ const Profile = (props: PropsType) => {
                          status={props.status}
                          updateStatus={props.updateStatus}
                          savePhoto={props.savePhoto}
+                         saveProfile={props.saveProfile}
             />
             <MyPostsContainer/>
         </div>

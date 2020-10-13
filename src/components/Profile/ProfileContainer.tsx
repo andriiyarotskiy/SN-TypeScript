@@ -4,20 +4,21 @@ import {connect} from 'react-redux';
 import {
     getStatus,
     getUserProfile,
-    ProfileType, savePhoto,
+    ProfileType, savePhoto, saveProfile,
     updateStatus
 } from "../../redux/profile-reducer";
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import {AppStateType} from "../../redux/redux-store";
 import {compose} from 'redux';
+import {NullableType} from "../../utils/typeAssist";
 
 type PathParamsType = {
     userId: string
 }
 type MapStatePropsType = {
-    profile: ProfileType | null
+    profile: NullableType<ProfileType>
     status: string
-    authorizedUserId: number | null
+    authorizedUserId: NullableType<number>
     isAuth: boolean
 }
 type MapDispatchPropsType = {
@@ -25,6 +26,7 @@ type MapDispatchPropsType = {
     getStatus: (userId: string) => void
     updateStatus: (status: string) => void
     savePhoto: any // ANY!!!!!!!!!!!!!!
+    saveProfile: any
 }
 type OwnPropsType = MapStatePropsType & MapDispatchPropsType
 
@@ -82,5 +84,7 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => ({
 export default compose<any>(
     // WithAuthRedirect,
     withRouter,
-    connect(mapStateToProps, {getUserProfile, getStatus, updateStatus, savePhoto}),
+    connect(mapStateToProps, {
+        getUserProfile, getStatus, updateStatus,
+        savePhoto, saveProfile}),
 )(ProfileContainer)

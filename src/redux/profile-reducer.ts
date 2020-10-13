@@ -1,5 +1,7 @@
 import {profileAPI, usersAPI} from "../api/api";
 import {Dispatch} from "redux";
+import {NullableType} from "../utils/typeAssist";
+import {stopSubmit} from "redux-form";
 
 const ADD_POST = 'ADD-POST';
 const DELETE_POST = 'DELETE_POST';
@@ -7,13 +9,9 @@ const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_STATUS = 'SET_STATUS';
 const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS';
 
-export type ProfileRootType = {
-    profile: ProfileType
-}
-
 export type ProfilePageType = {
+    profile: any // NullableType<ProfileType>
     posts: Array<PostsType>
-    profile: any // ProfileType | null
     status: string
 }
 export type PostsType = {
@@ -21,9 +19,28 @@ export type PostsType = {
     id?: number,   // здесь для id необезательный тип указал
     likesCount: string,
 }
+
+export type ProfilePhotosType = {
+    small: string
+    large: string
+}
+
+export type ProfileContactType = {
+    facebook: string
+    website: NullableType<string>
+    vk: string
+    twitter: string
+    instagram: string
+    youtube: NullableType<string>
+    github: string
+    mainLink: NullableType<string>
+}
+
+export type KeyContactsType = Array<keyof ProfileContactType>
+
 export type ProfileType = {
     aboutMe: string,
-    contacts?: ProfileContactType,
+    contacts: ProfileContactType //ProfileContactType,
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
@@ -31,23 +48,7 @@ export type ProfileType = {
     photos: ProfilePhotosType
 }
 
-export type ProfileContactType = {
-    facebook: string
-    website: null | string
-    vk: string
-    twitter: string
-    instagram: string
-    youtube: null | string
-    github: string
-    mainLink: null | string
-}
-export type ProfilePhotosType = {
-    small: string
-    large: string
-}
-
-
-export type ActionType = AddPostActionCreatorType // Типизация action
+export type ActionType = AddPostActionCreatorType
     | SetUserProfileACTYPE
     | setStatusType
     | deletePostActionCreatorType
@@ -141,13 +142,21 @@ export const updateStatus = (status: string) => async (dispatch: any) => {
         dispatch(setStatus(status))
     }
 }
-export const savePhoto = (file: any) => async (dispatch: Dispatch) => { // any!!!!!!!
-
-        let response = await profileAPI.savePhoto(file)
-        if (response.data.resultCode === 0) {
-            dispatch(savePhotoSuccess(response.data.data.photos))
-        }
-
+export const savePhoto = (file: Blob) => async (dispatch: Dispatch) => { // any!!!!!!!
+    let response = await profileAPI.savePhoto(file)
+    if (response.data.resultCode === 0) {
+        dispatch(savePhotoSuccess(response.data.data.photos))
+    }
+}
+export const saveProfile = (profile: ProfileType) => async (dispatch: any, getState: any) => { // any!!!!!!!
+    const userId = getState().auth.userId;
+    const response = await profileAPI.saveProfile(profile)
+    if (response.data.resultCode === 0) {
+        dispatch(getUserProfile(userId))
+    } else {
+        dispatch(stopSubmit("edit-profile", {_error: response.data.messages[0]}))
+        return Promise.reject(response.data.messages[0])
+    }
 }
 
 export default profileReducer;
