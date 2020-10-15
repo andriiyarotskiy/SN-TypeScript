@@ -8,10 +8,12 @@ type ActionType = InitializeSuccessACTYPE | SetAuthUserDataACTYPE
 
 export type AppType = {
     initialized: boolean
+    globalError: null
 }
 
 let initialState: AppType = {
     initialized: false,
+    globalError: null
 
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {HashRouter, Route, withRouter} from 'react-router-dom';
+import {HashRouter, Route, withRouter, Switch, Redirect} from 'react-router-dom';
 import './App.css';
 import Navbar from "./components/Navbar/Navbar";
 import HeaderContainer from "./components/Header/HeaderContainer";
@@ -23,8 +23,17 @@ type AppType = {
 
 class App extends React.Component<AppType> {
 
+    catchAllUnhandledErrors = (promiseRejectionEvent: any) => {
+        alert("Some error occured")
+    }
+
     componentDidMount() {
         this.props.initializeApp()
+        window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
+    }
+
+    componentWillUnmount(): void {
+        window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
     }
 
 
@@ -38,15 +47,20 @@ class App extends React.Component<AppType> {
                 <Navbar/>
 
                 <div className={'app-wrapper-content'}>
+                    <Switch>
+                        <Route exact path='/' render={() => <Redirect to={"/profile"}/>}/>
 
-                    <Route path='/dialogs' render={WithSuspense(DialogsContainer)}/>
-                    <Route path='/profile/:userId?' render={WithSuspense(ProfileContainer)}/>
-                    <Route path='/users' render={() =>
-                        <UsersContainer/>}
-                    />
-                    <Route path='/login' render={() =>
-                        <Login/>}
-                    />
+                        <Route path='/dialogs' render={WithSuspense(DialogsContainer)}/>
+                        <Route path='/profile/:userId?' render={WithSuspense(ProfileContainer)}/>
+                        <Route path='/users' render={() =>
+                            <UsersContainer/>}
+                        />
+                        <Route path='/login' render={() =>
+                            <Login/>}
+                        />
+                        <Route path='*' render={() =>
+                            <div>404 NOT FOUND</div>}/>
+                    </Switch>
                 </div>
 
             </div>

@@ -17,6 +17,7 @@ import {
     getUsers
 } from "../../redux/users-selectors";
 import {AppStateType} from "../../redux/redux-store";
+import {WithAuthRedirect} from "../../HOC/WithAuthRedirect";
 
 // type UsersContainerType = {
 //     toggleIsFetching: (arg0: boolean) => void
@@ -83,6 +84,7 @@ let mapStateToProps = (state: AppStateType) => {
 }
 
 export default compose<any>(
+    WithAuthRedirect,
     connect(mapStateToProps, {
         follow, unfollow, setCurrentPage,
         toggleFollowingProgress, getUsers: requestUsers
