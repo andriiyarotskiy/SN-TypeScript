@@ -23,6 +23,8 @@ const LoginForm = ({handleSubmit, error, captchaUrl}: InjectedFormProps<FormData
 
     return (
         <form onSubmit={handleSubmit}>
+            <div>Email : free@samuraijs.com </div>
+            <div>Password : free</div>
             {createField('Email', 'email', [required], Input, {type: 'text'})}
             {createField('Password', 'password', [required], Input, {type: 'text'})}
             {createField(null, 'rememberMe', [], Input, {type: 'checkbox'}, 'remember me')}
