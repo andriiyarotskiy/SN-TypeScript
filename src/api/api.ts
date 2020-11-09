@@ -1,4 +1,5 @@
 import axios from "axios";
+import {NullableType} from "../utils/typeAssist";
 
 
 const instance = axios.create({
@@ -37,20 +38,33 @@ export const profileAPI = {
         return instance.get(`profile/` + userId) // query parametr
     },
     getStatus(userId: string) {
-        return instance.get(`status/` + userId) // URI parametr
+        return instance.get(`profile/status/` + userId) // URI parametr
     },
     updateStatus(status: string) {
         return instance.put(`profile/status/`, {status})
+    },
+    savePhoto(photoFile: Blob) {
+        const formData = new FormData();
+        formData.append("image", photoFile)
+        return instance.put(`profile/photo/`, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+    },
+    saveProfile(profile: any) { // ANY!!!!!!!!!!!!!
+        return instance.put(`profile`, profile);
     },
 }
 export const authAPI = {
     me() {
         return instance.get(`auth/me`)
     },
-    login(email: string, password: string, rememberMe = false) {
-        return instance.post(`auth/login`, {email, password, rememberMe})
+    login(email: string, password: string, rememberMe = false, captcha: NullableType<boolean>) {
+        return instance.post(`auth/login`, {email, password, rememberMe, captcha})
     },
     logout() {
         return instance.delete(`auth/login`)
     }
+}
+export const securityAPI = {
+    getCaptchaUrl() {
+        return instance.get(`security/get-captcha-url`)
+    },
 }
